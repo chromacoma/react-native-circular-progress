@@ -9,11 +9,13 @@ export default class AnimatedCircularProgress extends React.PureComponent {
     super(props);
     this.state = {
       fillAnimation: new Animated.Value(props.prefill),
+      rotationAnimation: new Animated.Value(props.rotation),
     };
   }
 
   componentDidMount() {
     this.animate();
+    this.animateRotation();
   }
 
   componentDidUpdate(prevProps) {
@@ -36,7 +38,7 @@ export default class AnimatedCircularProgress extends React.PureComponent {
     const duration = dur || this.props.duration;
     const easing = ease || this.props.easing;
     const useNativeDriver = this.props.useNativeDriver;
-    
+
     const anim = Animated.timing(this.state.fillAnimation, {
       useNativeDriver,
       toValue,
@@ -50,21 +52,51 @@ export default class AnimatedCircularProgress extends React.PureComponent {
 
   animateColor() {
     if (!this.props.tintColorSecondary) {
-      return this.props.tintColor
+      return this.props.tintColor;
     }
 
     const tintAnimation = this.state.fillAnimation.interpolate({
       inputRange: [0, 100],
-      outputRange: [this.props.tintColor, this.props.tintColorSecondary]
-    })
+      outputRange: [this.props.tintColor, this.props.tintColorSecondary],
+    });
 
-    return tintAnimation
+    return tintAnimation;
+  }
+
+  animateRotation() {
+    if (!this.props.rotationDuration) {
+      return this.props.rotation;
+    }
+
+    const toValue = this.props.rotation + 360;
+    const duration = this.props.rotationDuration;
+    const easing = this.props.easing;
+    const useNativeDriver = this.props.useNativeDriver;
+
+    const anim = Animated.loop(
+      Animated.timing(this.state.rotationAnimation, {
+        useNativeDriver,
+        toValue,
+        easing,
+        duration,
+      })
+    );
+    anim.start();
+
+    return anim;
   }
 
   render() {
     const { fill, prefill, ...other } = this.props;
 
-    return <AnimatedProgress {...other} fill={this.state.fillAnimation} tintColor={this.animateColor()} />;
+    return (
+      <AnimatedProgress
+        {...other}
+        fill={this.state.fillAnimation}
+        rotation={this.state.rotationAnimation}
+        tintColor={this.animateColor()}
+      />
+    );
   }
 }
 
