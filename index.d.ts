@@ -1,12 +1,6 @@
 declare module 'react-native-circular-progress' {
   import * as React from 'react';
-  import {
-    Animated,
-    Easing,
-    ViewPropTypes,
-    StyleProp,
-    ViewStyle
-  } from 'react-native';
+  import { Animated, Easing, ViewPropTypes, StyleProp, ViewStyle } from 'react-native';
 
   export interface AnimatedCircularProgressProps {
     /**
@@ -134,6 +128,21 @@ declare module 'react-native-circular-progress' {
     duration?: number;
 
     /**
+     * Duration of rotation animation in ms
+     *
+     * @type {number}
+     * @default 0
+     */
+    rotationDuration?: number;
+
+    /**
+     *
+     * @type {Function}
+     * @default Easing.out(Easing.ease)
+     */
+    easing?: () => void;
+
+    /**
      *
      * @type {Function}
      * @default Easing.out(Easing.ease)
@@ -158,9 +167,7 @@ declare module 'react-native-circular-progress' {
      * Function that's invoked during rendering to draw at the tip of the progress circle
      *
      */
-    renderCap?: (payload: {
-      center: { x: number; y: number };
-    }) => React.ReactNode;
+    renderCap?: (payload: { center: { x: number; y: number } }) => React.ReactNode;
 
     /**
      * Use dashed type for tint/progress line
@@ -179,9 +186,7 @@ declare module 'react-native-circular-progress' {
     dashedBackground?: { width: number; gap: number };
   }
 
-  export class AnimatedCircularProgress extends React.Component<
-    AnimatedCircularProgressProps
-  > {
+  export class AnimatedCircularProgress extends React.Component<AnimatedCircularProgressProps> {
     /**
      * Animate the progress bar to a specific value
      *
@@ -199,11 +204,6 @@ declare module 'react-native-circular-progress' {
      * @param {number} duration
      * @param {Function} ease
      */
-    reAnimate: (
-      prefill: number,
-      toVal: number,
-      duration: number,
-      ease?: Function
-    ) => void;
+    reAnimate: (prefill: number, toVal: number, duration: number, ease?: Function) => void;
   }
 }
