@@ -70,7 +70,7 @@ export default class AnimatedCircularProgress extends React.PureComponent {
 
     const toValue = this.props.rotation + 360;
     const duration = this.props.rotationDuration;
-    const easing = this.props.easing;
+    const easing = this.props.rotationEasing;
     const useNativeDriver = this.props.useNativeDriver;
 
     const anim = Animated.loop(
@@ -112,6 +112,7 @@ AnimatedCircularProgress.propTypes = {
 AnimatedCircularProgress.defaultProps = {
   duration: 500,
   easing: Easing.out(Easing.ease),
+  rotationEasing: Easing.inOut(Easing.ease),
   prefill: 0,
   useNativeDriver: false,
 };
